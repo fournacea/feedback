@@ -7,11 +7,14 @@
     <title>Your Review</title>
 </head>
 <body>
-    <form action="/" method="post">
-        {% csrf_token %}
-        <label for="username">Your Name:</label>
-        <input id="username" name="username" type="text">
-        <button type="submit">Send</button>
-    </form>
+    <div class="form-control {% if form.user_name.errors %} errors {% endif %}">
+        <form action="/" method="post">
+            {% csrf_token %}
+            {{ form.user_name.label_tag }}
+            {{ form.user_name }}
+            {{ form.user_name.errors }}
+            <button type="submit">Send</button>
+        </form>
+    </div>
 </body>
 </html>
