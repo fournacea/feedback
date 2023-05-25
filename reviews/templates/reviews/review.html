@@ -10,14 +10,35 @@
     <title>Your Review</title>
 </head>
 <body>
-    <div class="form-control {% if form.user_name.errors %} errors {% endif %}">
-        <form action="/" method="post">
+    <form action="/" method="post">
+        <div class="form-control {% if form.user_name.errors %} errors {% endif %}">
             {% csrf_token %}
             {{ form.user_name.label_tag }}
             {{ form.user_name }}
-            {{ form.user_name.errors }}
-            <button type="submit">Send</button>
-        </form>
-    </div>
+            {{ form.user_name.errors }} 
+        </div>
+
+        <div class="form-control {% if form.review_text.errors %} errors {% endif %}">
+            {{ form.review_text.label_tag }}
+            {{ form.review_text }}
+            {{ form.review_text.errors }}         
+        </div>
+
+        <div class="form-control {% if form.rating.errors %} errors {% endif %}">
+            {{ form.rating.label_tag }}
+            {{ form.rating }}
+            {{ form.rating.errors }}         
+        </div>
+
+        <button type="submit">Send</button>
+    </form>
 </body>
 </html>
+
+
+
+
+
+
+
+
