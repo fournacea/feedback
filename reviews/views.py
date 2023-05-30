@@ -2,23 +2,22 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from .forms import ReviewForm
-from .models import Review
 
+from .models import Review
 
 # Create your views here.
 
 def review(request):
+    ##-- To update instead of create new review --##
+    # if request.method == "POST":
+    # existing_data = Review.objects.get(pk=4)
+    # form = ReviewForm(request.POST, instance=existing_data)
+
     if request.method == "POST":
         form = ReviewForm(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data)
-            review = Review(
-                user_name=form.cleaned_data['user_name'],
-                review_text=form.cleaned_data['review_text'],
-                rating=form.cleaned_data['rating'],
-            )
-            review.save()
+            form.save()
             return HttpResponseRedirect("thank-you")
         
     else:

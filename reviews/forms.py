@@ -15,3 +15,17 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = '__all__'
+        labels = {
+            "user_name": "Name:",
+            "review_text": "Feedback:",
+            "rating": "Rating:",
+
+        }
+
+        error_messages = {
+            "user_name": {
+                "required": "Your name must not be empty",
+                "max_length": "Name must be less than 100 characters",
+            }
+
+        }
