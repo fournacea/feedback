@@ -1,8 +1,10 @@
 from typing import Any, Dict
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views import View
 from django.views.generic.base import TemplateView
+from django.views.generic import ListView
 
 
 from .forms import ReviewForm
@@ -33,24 +35,16 @@ class ReviewView(View):
             })
 
 
-class ThankYouView(TemplateView):
-    template_name = "reviews/thank_you.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["message"] = "This works!"
-        return context
-    
-
-class ReviewsListView(TemplateView):
+class ReviewsListView(ListView):
     template_name = "reviews/review_list.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        reviews = Review.objects.all()
-        context["reviews"] = reviews
-        return context 
+    model = Review
+    context_object_name = "reviews"
    
+    # def get_queryset(self):
+    #     base_query = super().get_queryset()
+    #     data= base_query.filter(rating__gt=4)
+    #     return data
+
 
 class SingleReviewView(TemplateView):
     template_name = "reviews/single_review.html"
@@ -62,6 +56,19 @@ class SingleReviewView(TemplateView):
         context["review"] = selected_review
         return context
                                 # except block: return 404 page
+
+
+class ThankYouView(TemplateView):
+    template_name = "reviews/thank_you.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["message"] = "This works!"
+        return context
+
+
+
+
 
     
 
