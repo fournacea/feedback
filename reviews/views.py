@@ -1,10 +1,11 @@
 from typing import Any, Dict
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.views.generic.base import TemplateView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormView
 
 
 from .forms import ReviewForm
@@ -13,26 +14,27 @@ from .models import Review
 
 # Create your views here.
 
-class ReviewView(View):
-    def get(self, request):
-        form = ReviewForm()
+class ReviewView(FormView):
+    form_class = ReviewForm
+    template_name = "reviews/review.html"
+    success_url = "/thank-you"
 
-        return render(request, "reviews/review.html",{
-            "form": form
-        })
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
-    def post(self, request):
-        form = ReviewForm(request.POST)
+    # def post(self, request):
+    #     form = ReviewForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("thank-you")
+    #     if form.is_valid():
+    #         form.save()
+    #         return HttpResponseRedirect("thank-you")
         
-        else:
-            return render(request, "reviews/review.html",{
-                "form": form
-            })
+    #     else:
+    #         return render(request, "reviews/review.html",{
+    #             "form": form
+    #         })
 
 
 class ReviewsListView(ListView):
@@ -46,16 +48,10 @@ class ReviewsListView(ListView):
     #     return data
 
 
-class SingleReviewView(TemplateView):
+class SingleReviewView(DetailView):
     template_name = "reviews/single_review.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        review_id = kwargs["id"]
-        selected_review = Review.objects.get(pk=review_id) #Need try/except
-        context["review"] = selected_review
-        return context
-                                # except block: return 404 page
+    model = Review
+    
 
 
 class ThankYouView(TemplateView):
@@ -64,6 +60,7 @@ class ThankYouView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["message"] = "This works!"
+        context["message2"] = "This works too!"
         return context
 
 
