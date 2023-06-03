@@ -126,6 +126,8 @@ STATIC_URL = 'static/'
 #     'profiles/static/profiles/'
 # ]
 
+MEDIA_ROOT = BASE_DIR / 'uploads'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
